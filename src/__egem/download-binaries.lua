@@ -10,10 +10,10 @@ local function download(url, dst, options)
         fs.remove(_tmpFile)
         ami_error("Failed to download: " .. tostring(_error))
     end
-
-    if not _ok or not os.rename(_tmpFile, dst) then
-        fs.remove(_tmpFile)
-        ami_error("Failed to download - " .. tostring(url) .. " - " .. tostring(_error))
+    
+    if not fs.safe_copy_file(_tmpFile, dst) then
+        fs.safe_remove(_tmpFile)
+        ami_error("Failed to copy downloaded file into '" .. tostring(dst) .. "'!")
     end
 end
 
